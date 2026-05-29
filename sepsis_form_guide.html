@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>วิธีสร้าง Sepsis Google Form</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap');
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: #f0f4f8;
+    color: #1e293b;
+    min-height: 100vh;
+  }
+
+  .hero {
+    background: linear-gradient(135deg, #0f2744 0%, #1a3c5e 60%, #0e7490 100%);
+    padding: 48px 24px 40px;
+    text-align: center;
+    color: #fff;
+  }
+  .hero-icon { font-size: 48px; margin-bottom: 12px; }
+  .hero h1 { font-size: 26px; font-weight: 800; line-height: 1.3; margin-bottom: 8px; }
+  .hero p { color: #93c5fd; font-size: 14px; }
+
+  .container { max-width: 760px; margin: 0 auto; padding: 32px 20px 60px; }
+
+  .section-title {
+    font-size: 13px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #64748b;
+    margin: 32px 0 16px;
+  }
+
+  /* Steps */
+  .step {
+    display: flex; gap: 16px; margin-bottom: 20px;
+    background: #fff; border-radius: 16px;
+    padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    border: 1px solid #e2e8f0;
+    transition: box-shadow 0.2s;
+  }
+  .step:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+
+  .step-num {
+    width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+    background: #0f2744; color: #fff;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800;
+  }
+  .step-content h3 { font-size: 15px; font-weight: 700; margin-bottom: 6px; color: #0f172a; }
+  .step-content p { font-size: 13px; color: #475569; line-height: 1.7; }
+
+  .url-box {
+    background: #f8fafc; border: 1.5px dashed #94a3b8;
+    border-radius: 10px; padding: 12px 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 13px; color: #0e7490; font-weight: 700;
+    margin-top: 10px; cursor: pointer; user-select: all;
+    word-break: break-all;
+  }
+
+  .tip {
+    background: #eff6ff; border-left: 4px solid #3b82f6;
+    border-radius: 0 10px 10px 0; padding: 12px 16px;
+    font-size: 13px; color: #1e40af; margin-top: 10px; line-height: 1.6;
+  }
+  .tip b { color: #1d4ed8; }
+
+  .warn {
+    background: #fff7ed; border-left: 4px solid #f59e0b;
+    border-radius: 0 10px 10px 0; padding: 12px 16px;
+    font-size: 13px; color: #92400e; margin-top: 10px; line-height: 1.6;
+  }
+
+  /* Code block */
+  .code-block {
+    background: #0f172a; border-radius: 14px;
+    padding: 20px; margin-top: 16px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px; color: #e2e8f0; line-height: 1.8;
+    overflow-x: auto; position: relative;
+  }
+  .code-block .comment { color: #64748b; }
+  .code-block .keyword { color: #93c5fd; }
+  .code-block .string { color: #86efac; }
+  .code-label {
+    position: absolute; top: 12px; right: 14px;
+    background: #1e293b; color: #64748b;
+    font-size: 10px; border-radius: 6px; padding: 3px 8px; letter-spacing: 1px;
+  }
+
+  /* Form fields preview */
+  .fields-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 12px;
+  }
+  @media (max-width: 500px) { .fields-grid { grid-template-columns: 1fr; } }
+
+  .field-badge {
+    background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+    padding: 10px 14px; font-size: 12px;
+  }
+  .field-badge .label { color: #64748b; font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .field-badge .name { font-weight: 700; color: #0f172a; }
+  .field-badge .type { color: #0e7490; font-size: 11px; margin-top: 2px; }
+
+  .req { color: #ef4444; }
+
+  /* Share box */
+  .share-box {
+    background: linear-gradient(135deg, #0f2744, #0e7490);
+    border-radius: 16px; padding: 24px; margin-top: 24px; color: #fff;
+    text-align: center;
+  }
+  .share-box h3 { font-size: 18px; font-weight: 800; margin-bottom: 8px; }
+  .share-box p { color: #bae6fd; font-size: 13px; margin-bottom: 16px; }
+  .share-btn {
+    display: inline-block; background: #fff; color: #0f2744;
+    border-radius: 10px; padding: 10px 24px;
+    font-weight: 800; font-size: 14px; text-decoration: none;
+    margin: 4px;
+  }
+
+  .result-box {
+    background: #f0fdf4; border: 2px solid #22c55e;
+    border-radius: 16px; padding: 20px; margin-top: 20px;
+  }
+  .result-box h4 { font-size: 14px; font-weight: 700; color: #166534; margin-bottom: 10px; }
+  .result-box ul { list-style: none; font-size: 13px; color: #15803d; }
+  .result-box ul li { padding: 4px 0; }
+  .result-box ul li::before { content: "✅ "; }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-icon">🦠</div>
+  <h1>วิธีสร้าง Sepsis Registry<br>Google Form สำหรับ RN</h1>
+  <p>ทำตามขั้นตอน 5 นาที · ข้อมูลเข้า Google Sheet อัตโนมัติ · แชร์ลิ้งค์ได้ทันที</p>
+</div>
+
+<div class="container">
+
+  <div class="section-title">📋 ฟิลด์ทั้งหมดในฟอร์ม</div>
+
+  <div class="fields-grid">
+    <div class="field-badge"><div class="label">ข้อมูลพื้นฐาน</div><div class="name">HN <span class="req">*</span></div><div class="type">📝 Short text</div></div>
+    <div class="field-badge"><div class="label">ข้อมูลพื้นฐาน</div><div class="name">ชื่อ-นามสกุล <span class="req">*</span></div><div class="type">📝 Short text</div></div>
+    <div class="field-badge"><div class="label">ข้อมูลพื้นฐาน</div><div class="name">อายุ (ปี) <span class="req">*</span></div><div class="type">🔢 Short text</div></div>
+    <div class="field-badge"><div class="label">ข้อมูลพื้นฐาน</div><div class="name">เพศ <span class="req">*</span></div><div class="type">⚪ Multiple choice</div></div>
+    <div class="field-badge"><div class="label">ข้อมูลพื้นฐาน</div><div class="name">Ward (ICU / Med) <span class="req">*</span></div><div class="type">⚪ Multiple choice</div></div>
+    <div class="field-badge"><div class="label">ข้อมูลพื้นฐาน</div><div class="name">Admit Date <span class="req">*</span></div><div class="type">📅 Date picker</div></div>
+    <div class="field-badge"><div class="label">การวินิจฉัย</div><div class="name">Diagnosis <span class="req">*</span></div><div class="type">⚪ Multiple choice</div></div>
+    <div class="field-badge"><div class="label">การวินิจฉัย</div><div class="name">Source of Infection <span class="req">*</span></div><div class="type">⚪ Multiple choice</div></div>
+    <div class="field-badge"><div class="label">การวินิจฉัย</div><div class="name">Organism / เชื้อ</div><div class="type">📝 Short text</div></div>
+    <div class="field-badge"><div class="label">ความรุนแรง</div><div class="name">SOFA Score <span class="req">*</span></div><div class="type">🔢 Short text</div></div>
+    <div class="field-badge"><div class="label">ความรุนแรง</div><div class="name">Lactate (mmol/L)</div><div class="type">🔢 Short text</div></div>
+    <div class="field-badge"><div class="label">ความรุนแรง</div><div class="name">Vasopressor <span class="req">*</span></div><div class="type">⚪ Multiple choice</div></div>
+    <div class="field-badge"><div class="label">ความรุนแรง</div><div class="name">Ventilator <span class="req">*</span></div><div class="type">⚪ Multiple choice</div></div>
+    <div class="field-badge"><div class="label">ผลการรักษา</div><div class="name">Outcome <span class="req">*</span></div><div class="type">⚪ Multiple choice</div></div>
+    <div class="field-badge"><div class="label">ผลการรักษา</div><div class="name">LOS (วัน)</div><div class="type">🔢 Short text</div></div>
+    <div class="field-badge"><div class="label">ผลการรักษา</div><div class="name">ผู้กรอกข้อมูล / RN</div><div class="type">📝 Short text</div></div>
+  </div>
+
+  <div class="section-title">🚀 วิธีสร้างฟอร์มด้วย Script อัตโนมัติ (แนะนำ)</div>
+
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-content">
+      <h3>เปิด Google Apps Script</h3>
+      <p>เปิดเบราว์เซอร์ แล้วไปที่ลิ้งค์นี้ (ต้อง login บัญชี Google ก่อน)</p>
+      <div class="url-box">https://script.google.com</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-content">
+      <h3>สร้าง Project ใหม่</h3>
+      <p>คลิก <b>"New project"</b> (ปุ่มสีน้ำเงิน มุมซ้ายบน) จะเปิดหน้า editor โค้ด</p>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">3</div>
+    <div class="step-content">
+      <h3>วางโค้ด Script</h3>
+      <p>ลบโค้ดเดิมทั้งหมดออก แล้ววางโค้ดจากไฟล์ <b>sepsis_form_creator.gs</b> ที่ดาวน์โหลดไว้</p>
+      <div class="tip"><b>💡 Tip:</b> กด Ctrl+A เพื่อเลือกโค้ดเดิมทั้งหมด แล้ว Ctrl+V วางโค้ดใหม่</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">4</div>
+    <div class="step-content">
+      <h3>Run Script</h3>
+      <p>ตรวจสอบว่าเลือก function <b>"createSepsisForm"</b> แล้วกดปุ่ม <b>▶ Run</b></p>
+      <div class="warn">⚠️ Google จะขอ Permission ครั้งแรก — ให้คลิก "Allow" เพื่ออนุญาต</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">5</div>
+    <div class="step-content">
+      <h3>รับลิ้งค์ฟอร์ม</h3>
+      <p>รอประมาณ 10–20 วินาที จะมี popup แสดงลิ้งค์ 2 อัน:</p>
+      <div class="result-box">
+        <h4>สิ่งที่ได้รับ:</h4>
+        <ul>
+          <li>ลิ้งค์ Google Form สำหรับ RN กรอกข้อมูล</li>
+          <li>Google Sheet บันทึกคำตอบอัตโนมัติ</li>
+          <li>Sheet "📊 Dashboard" พร้อมสูตรสถิติ</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-title">📤 วิธีแชร์ให้ RN</div>
+
+  <div class="step">
+    <div class="step-num">📱</div>
+    <div class="step-content">
+      <h3>แชร์ผ่าน LINE / QR Code</h3>
+      <p>คัดลอกลิ้งค์ฟอร์ม → วางใน LINE กลุ่ม Ward<br>
+      หรือสร้าง QR Code จากลิ้งค์ แปะที่ Nurse Station ได้เลย</p>
+      <div class="tip"><b>💡</b> ใช้เว็บ <b>qr-code-generator.com</b> แปลงลิ้งค์เป็น QR Code ฟรี แล้วปริ้นติดที่ Ward</div>
+    </div>
+  </div>
+
+  <div class="step">
+    <div class="step-num">💻</div>
+    <div class="step-content">
+      <h3>ดูสถิติใน Google Sheets</h3>
+      <p>เปิด Sheet ที่สร้างขึ้น → ดูข้อมูลดิบที่ Sheet <b>"ข้อมูลผู้ป่วย"</b><br>
+      ดูสถิติสรุปที่ Sheet <b>"📊 Dashboard"</b> ข้อมูลอัปเดตทันทีทุกครั้งที่ RN กด Submit</p>
+    </div>
+  </div>
+
+  <div class="section-title">📊 Dashboard ใน Google Sheets</div>
+
+  <div style="background:#fff;border-radius:16px;padding:20px;border:1px solid #e2e8f0;margin-bottom:16px;">
+    <div style="font-weight:700;font-size:14px;color:#0f2744;margin-bottom:12px;">สิ่งที่จะเห็นใน Sheet Dashboard:</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:13px;">
+      <div style="background:#f0f7ff;border-radius:8px;padding:12px;">📊 <b>จำนวนผู้ป่วยรวม</b><br><span style="color:#64748b;font-size:11px;">นับอัตโนมัติจากข้อมูล</span></div>
+      <div style="background:#f0f7ff;border-radius:8px;padding:12px;">💀 <b>Mortality Rate</b><br><span style="color:#64748b;font-size:11px;">คิดเป็น % อัตโนมัติ</span></div>
+      <div style="background:#f0f7ff;border-radius:8px;padding:12px;">🏥 <b>แบ่ง ICU / Med</b><br><span style="color:#64748b;font-size:11px;">รายละเอียดแต่ละ Ward</span></div>
+      <div style="background:#f0f7ff;border-radius:8px;padding:12px;">🦠 <b>Source of Infection</b><br><span style="color:#64748b;font-size:11px;">แยกตามแหล่งติดเชื้อ</span></div>
+      <div style="background:#f0f7ff;border-radius:8px;padding:12px;">📅 <b>จำนวนรายเดือน</b><br><span style="color:#64748b;font-size:11px;">ม.ค.–ธ.ค. ปีปัจจุบัน</span></div>
+      <div style="background:#f0f7ff;border-radius:8px;padding:12px;">💉 <b>Vasopressor / Ventilator</b><br><span style="color:#64748b;font-size:11px;">นับอัตโนมัติ</span></div>
+    </div>
+  </div>
+
+  <div class="section-title">❓ คำถามที่พบบ่อย</div>
+
+  <div style="display:flex;flex-direction:column;gap:12px;">
+    <div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;font-size:13px;">
+      <b style="color:#0f2744;">Q: RN ต้องมีบัญชี Google ไหม?</b><br>
+      <span style="color:#475569;">A: ไม่จำเป็น ถ้าตั้ง Form ให้ "ไม่ต้อง login" (ค่า default) RN เปิดลิ้งค์กรอกได้เลย</span>
+    </div>
+    <div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;font-size:13px;">
+      <b style="color:#0f2744;">Q: ข้อมูลจะหายไหม?</b><br>
+      <span style="color:#475569;">A: ไม่หายครับ ข้อมูลเก็บใน Google Drive ของ account ที่รัน script ข้อมูลสะสมตลอด</span>
+    </div>
+    <div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;font-size:13px;">
+      <b style="color:#0f2744;">Q: ถ้าอยากให้คนอื่นดู Sheet ด้วย?</b><br>
+      <span style="color:#475569;">A: เปิด Google Sheet → Share → ใส่อีเมลหรือตั้งเป็น "Anyone with link can view"</span>
+    </div>
+    <div style="background:#fff;border-radius:12px;padding:16px;border:1px solid #e2e8f0;font-size:13px;">
+      <b style="color:#0f2744;">Q: อยากเพิ่ม field ได้ไหม?</b><br>
+      <span style="color:#475569;">A: ได้เลย เข้าไปแก้ใน Google Forms ปกติ ข้อมูลใหม่จะเพิ่มเป็น column ใน Sheet อัตโนมัติ</span>
+    </div>
+  </div>
+
+  <div class="share-box">
+    <h3>🎉 พร้อมใช้งาน!</h3>
+    <p>หลังสร้างฟอร์มแล้ว แชร์ลิ้งค์หรือ QR Code ให้ RN ทุกคนได้เลย<br>ข้อมูลเข้า Google Sheet ทันทีที่กด Submit</p>
+  </div>
+
+</div>
+</body>
+</html>
